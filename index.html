@@ -14,6 +14,17 @@
         <button id="signupBtn">Sign Up</button>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("loginBtn").addEventListener("click", function () {
+                window.location.href = "./login.html";  // Ensure file path is correct
+            });
+
+            document.getElementById("signupBtn").addEventListener("click", function () {
+                window.location.href = "./signup.html";  // Ensure file path is correct
+            });
+        });
+    </script>
+
 </body>
 </html>

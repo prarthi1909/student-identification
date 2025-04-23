@@ -24,8 +24,8 @@ document.addEventListener("DOMContentLoaded", function () {
         loginForm.addEventListener("submit", function (event) {
             event.preventDefault();
 
-            let loginEmail = document.getElementById("loginEmail").value;
-            let loginPassword = document.getElementById("loginPassword").value;
+            let loginEmail = document.getElementById("login-email").value;
+            let loginPassword = document.getElementById("login-password").value;
 
             let storedEmail = localStorage.getItem("userEmail");
             let storedPassword = localStorage.getItem("userPassword");

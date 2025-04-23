@@ -1,22 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Signup</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h2>Sign Up</h2>
-        <form id="signupForm">
-            <input type="text" id="name" placeholder="Enter Name" required>
-            <input type="email" id="email" placeholder="Enter Email" required>
-            <input type="password" id="password" placeholder="Enter Password" required>
-            <button type="submit">Sign Up</button>
-        </form>
-    </div>
 
-    <script src="signup.js"></script>  <!-- JavaScript File Linked Here -->
+  <div class="container">
+    <h2>Sign Up</h2>
+    <form id="signupForm">
+      <input type="text" id="name" placeholder="Enter Name" required>
+      <input type="email" id="email" placeholder="Enter Email" required>
+      <input type="password" id="password" placeholder="Enter Password" required>
+
+      <!-- ✅ Course Dropdown Added -->
+      <select id="course" required>
+        <option value="">Select Course</option>
+      </select>
+
+      <button type="submit">Sign Up</button>
+    </form>
+
+    <p>Already have an account? <a href="login.html">Login here</a></p>
+  </div>
+
+  <script>
+    // ✅ Populate course dropdown on page load
+    window.onload = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/courses"); // 👈 5000 because server runs on 5000
+        const courses = await res.json();
+        const select = document.getElementById("course");
+
+        courses.forEach(course => {
+          const opt = document.createElement("option");
+          opt.value = course.name;
+          opt.textContent = course.name;
+          select.appendChild(opt);
+        });
+      } catch (err) {
+        console.error("❌ Failed to load courses:", err);
+      }
+    };
+  </script>
+
+  <script src="signup.js"></script>
 </body>
 </html>

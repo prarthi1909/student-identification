@@ -11,11 +11,6 @@ body {
     flex-direction: column;
 }
 
-    
-   
-
-  
-
 .container, .form-container {
     background: rgba(255, 255, 255, 0.9); /* White box with slight transparency */
     padding: 20px;
@@ -46,4 +41,27 @@ button {
 
 button:hover {
     background: #0056b3;
+}
+
+/* 👇 Added from login.css */
+.login-container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    width: 320px;
+}
+
+h2 {
+    text-align: center;
+}
+
+.signup-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.signup-link a {
+    text-decoration: none;
+    color: royalblue;
 }

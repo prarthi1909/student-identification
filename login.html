@@ -10,9 +10,11 @@
 <body>
     <div class="form-container">
         <h2>Login</h2>
-        <input type="email" id="login-email" placeholder="Enter Email">
-        <input type="password" id="login-password" placeholder="Enter Password">
-        <button onclick="login()">Login</button>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Enter Email" required />
+            <input type="password" id="loginPassword" placeholder="Enter Password" required />
+            <button type="submit">Login</button>
+        </form>
         <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
     </div>
     <script src="js/script.js"></script>
