@@ -1,14 +1,31 @@
+document.getElementById("role").addEventListener("change", function () {
+    const courseField = document.getElementById("course");
+    if (this.value === "student") {
+        courseField.style.display = "block";
+    } else {
+        courseField.style.display = "none";
+    }
+});
+
 document.getElementById("signupForm").addEventListener("submit", async function (e) {
-    e.preventDefault(); // Page refresh hone se rokta hai
+    e.preventDefault(); // Prevent page refresh
 
     // Get and trim form values
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
+    const role = document.getElementById("role").value;
+    const course = document.getElementById("course").value;
 
-    // Basic validation
-    if (!name || !email || !password) {
-        alert("⚠️ Please fill all the fields.");
+    // Validation: Required fields
+    if (!name || !email || !password || !role) {
+        alert("⚠️ Please fill all the required fields.");
+        return;
+    }
+
+    // If role is student, course must be selected
+    if (role === "student" && !course) {
+        alert("⚠️ Please select a course for student role.");
         return;
     }
 
@@ -25,7 +42,7 @@ document.getElementById("signupForm").addEventListener("submit", async function 
         return;
     }
 
-    // Optional: change button text to show loading state
+    // Show loading state
     const submitButton = document.querySelector("#signupForm button");
     submitButton.innerText = "Signing Up...";
     submitButton.disabled = true;
@@ -34,29 +51,35 @@ document.getElementById("signupForm").addEventListener("submit", async function 
         const response = await fetch("http://localhost:5000/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email, password })
+            body: JSON.stringify({
+                name,
+                email,
+                password,
+                role,
+                course: role === "student" ? course : null
+            })
         });
 
         const data = await response.json();
 
         if (response.ok) {
-            alert("✅ " + data.message); // Signup success message
+            alert("✅ " + data.message);
 
-            // Clear form after successful signup
+            // Clear form
             document.getElementById("signupForm").reset();
 
-            // Redirect to login page after 2 seconds
+            // Redirect
             setTimeout(() => {
                 window.location.href = "login.html";
             }, 2000);
         } else {
-            alert("❌ " + data.message); // Show error message if signup fails
+            alert("❌ " + data.message);
         }
     } catch (error) {
         console.error("Error:", error);
         alert("❌ Signup failed! Please try again.");
     } finally {
-        // Revert button text back and enable it
+        // Restore button
         submitButton.innerText = "Sign Up";
         submitButton.disabled = false;
     }

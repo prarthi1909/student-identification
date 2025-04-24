@@ -1,33 +1,59 @@
+/* General body styling */
 body {
     font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    margin: 0;
     background-image: url('https://images.pexels.com/photos/3184436/pexels-photo-3184436.jpeg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    flex-direction: column;
 }
 
-.container, .form-container {
-    background: rgba(255, 255, 255, 0.9); /* White box with slight transparency */
+/* Navigation Bar */
+.navbar {
+    background-color: #333;
+    padding: 15px 0;
+    color: white;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Main Container */
+.container {
+    background: rgba(255, 255, 255, 0.9);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     width: 300px;
     text-align: center;
+    margin: 120px auto; /* Center the box and push down below nav */
 }
 
-input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-}
-
+/* Buttons */
 button {
     width: 100%;
     padding: 10px;
@@ -43,13 +69,23 @@ button:hover {
     background: #0056b3;
 }
 
-/* 👇 Added from login.css */
+/* Inputs - in case used in login/signup */
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+}
+
+/* Login container reuse */
 .login-container {
     background-color: rgba(255, 255, 255, 0.95);
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     width: 320px;
+    margin: 120px auto;
 }
 
 h2 {
@@ -65,3 +101,78 @@ h2 {
     text-decoration: none;
     color: royalblue;
 }
+
+/* Base form styling */
+form {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+  }
+  
+  /* All input fields and select dropdown */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  select {
+    width: 100%;
+    padding: 14px 20px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 16px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border 0.3s ease;
+  }
+  
+  input:focus,
+  select:focus {
+    border-color: #007BFF;
+  }
+  
+  /* Dropdown custom icon (for consistent style) */
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position-x: 98%;
+    background-position-y: 50%;
+    background-color: #fff;
+  }
+  
+  /* Sign Up button */
+  button,
+  input[type="submit"] {
+    width: 100%;
+    background-color: #007BFF;
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover,
+  input[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Link style */
+  a {
+    color: #007BFF;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  
+  
+  
+  
+  

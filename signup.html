@@ -8,37 +8,82 @@
 </head>
 <body>
 
-  <div class="container">
+  <!-- ✅ Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <img src="logo.png" alt="Logo" style="height: 70px;">
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Signup</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ✅ Signup Form Section -->
+  <div class="login-container">
     <h2>Sign Up</h2>
     <form id="signupForm">
       <input type="text" id="name" placeholder="Enter Name" required>
       <input type="email" id="email" placeholder="Enter Email" required>
       <input type="password" id="password" placeholder="Enter Password" required>
 
-      <!-- ✅ Course Dropdown Added -->
-      <select id="course" required>
-        <option value="">Select Course</option>
+      <!-- ✅ Role Dropdown -->
+      <select id="role" required>
+        <option value="">Select Role</option>
+        <option value="student">Student</option>
+        <option value="teacher">Teacher</option>
       </select>
+
+      <!-- ✅ Course Dropdown (only for students) -->
+      <select id="course" name="course">
+        <option value="" disabled selected>Select Course</option>
+        <option value="bca">BCA</option>
+        <option value="btech">B.Tech</option>
+        <option value="mca">MCA</option>
+        <option value="mba">MBA</option>
+      </select>
+    
 
       <button type="submit">Sign Up</button>
     </form>
 
-    <p>Already have an account? <a href="login.html">Login here</a></p>
+    <div class="signup-link">
+      <p>Already have an account? <a href="login.html">Login here</a></p>
+    </div>
   </div>
 
+  <!-- ✅ Script to handle logic -->
   <script>
-    // ✅ Populate course dropdown on page load
+    const roleSelect = document.getElementById("role");
+    const courseSelect = document.getElementById("course");
+
+    // Hide course dropdown initially
+    courseSelect.style.display = "none";
+
+    roleSelect.addEventListener("change", () => {
+      if (roleSelect.value === "student") {
+        courseSelect.style.display = "block";
+        courseSelect.setAttribute("required", true);
+      } else {
+        courseSelect.style.display = "none";
+        courseSelect.removeAttribute("required");
+      }
+    });
+
     window.onload = async () => {
       try {
-        const res = await fetch("http://localhost:5000/courses"); // 👈 5000 because server runs on 5000
+        const res = await fetch("http://localhost:5000/courses");
         const courses = await res.json();
-        const select = document.getElementById("course");
 
         courses.forEach(course => {
           const opt = document.createElement("option");
           opt.value = course.name;
           opt.textContent = course.name;
-          select.appendChild(opt);
+          courseSelect.appendChild(opt);
         });
       } catch (err) {
         console.error("❌ Failed to load courses:", err);

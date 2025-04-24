@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Course</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="form-container">
+    <h2>Add New Course</h2>
+    <form id="courseForm">
+      <input type="text" id="name" placeholder="Course Name (e.g., B.Tech)" required />
+      <input type="number" id="duration" placeholder="Duration in years" required />
+      <input type="text" id="department" placeholder="Department (optional)" />
+      <button type="submit">Add Course</button>
+    </form>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    document.getElementById("courseForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const duration = +document.getElementById("duration").value;
+      const department = document.getElementById("department").value.trim();
+      const message = document.getElementById("message");
+
+      try {
+        const response = await fetch("/courses", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ name, duration, department })
+        });
+
+        const data = await response.json();
+        message.textContent = data.message;
+        message.style.color = response.ok ? "green" : "red";
+
+        if (response.ok) {
+          document.getElementById("courseForm").reset();
+        }
+      } catch (error) {
+        message.textContent = "❌ Error adding course.";
+        message.style.color = "red";
+      }
+    });
+  </script>
+</body>
+</html>
