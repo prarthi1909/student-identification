@@ -41,7 +41,6 @@ const User = mongoose.model("User", UserSchema);
 app.post("/signup", async (req, res) => {
   const { name, email, password, role, course } = req.body;
 
-  // ✅ Validation
   if (!name || !email || !password || !role || (role === "student" && !course)) {
     return res.status(400).json({ message: "Please fill all required fields." });
   }
@@ -101,6 +100,17 @@ app.post("/login", async (req, res) => {
   } catch (err) {
     console.error("Login Error:", err);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+// 🔹 GET /students - only fetch students
+app.get("/students", async (req, res) => {
+  try {
+    const students = await User.find({ role: "student" }).select("name email course");
+    res.status(200).json(students);
+  } catch (err) {
+    console.error("❌ Error fetching students:", err);
+    res.status(500).json({ message: "Failed to fetch students." });
   }
 });
 
