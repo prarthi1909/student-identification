@@ -38,15 +38,13 @@
         <option value="teacher">Teacher</option>
       </select>
 
+      <!-- ✅ Roll Number Input (only for students) -->
+      <input type="text" id="rollNumber" placeholder="Enter Roll Number" required style="display: none;">
+
       <!-- ✅ Course Dropdown (only for students) -->
-      <select id="course" name="course">
+      <select id="course" name="course" style="display: none;">
         <option value="" disabled selected>Select Course</option>
-        <option value="bca">BCA</option>
-        <option value="btech">B.Tech</option>
-        <option value="mca">MCA</option>
-        <option value="mba">MBA</option>
       </select>
-    
 
       <button type="submit">Sign Up</button>
     </form>
@@ -60,17 +58,25 @@
   <script>
     const roleSelect = document.getElementById("role");
     const courseSelect = document.getElementById("course");
+    const rollInput = document.getElementById("rollNumber");
 
-    // Hide course dropdown initially
+    // Hide course and roll initially
     courseSelect.style.display = "none";
+    rollInput.style.display = "none";
 
     roleSelect.addEventListener("change", () => {
       if (roleSelect.value === "student") {
         courseSelect.style.display = "block";
         courseSelect.setAttribute("required", true);
+
+        rollInput.style.display = "block";
+        rollInput.setAttribute("required", true);
       } else {
         courseSelect.style.display = "none";
         courseSelect.removeAttribute("required");
+
+        rollInput.style.display = "none";
+        rollInput.removeAttribute("required");
       }
     });
 

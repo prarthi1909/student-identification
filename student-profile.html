@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Student Profile</title>
+</head>
+<body>
+  <h2>👤 Student Profile</h2>
+  <div id="profile"></div>
+
+  <script>
+    const roll = prompt("Enter your Roll Number:");
+    fetch(`http://localhost:5000/student/${roll}`)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("profile").innerHTML = `
+          <p><strong>Name:</strong> ${data.name}</p>
+          <p><strong>Email:</strong> ${data.email}</p>
+          <p><strong>Course:</strong> ${data.course}</p>
+          <p><strong>Marks:</strong> ${data.marks ?? "N/A"}</p>
+          <p><strong>Attendance:</strong> ${data.attendance ?? "N/A"}%</p>
+        `;
+      })
+      .catch(() => alert("Failed to load profile."));
+  </script>
+</body>
+</html>

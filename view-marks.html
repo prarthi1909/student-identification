@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>View Marks</title>
+</head>
+<body>
+  <h2>📊 Your Marks</h2>
+  <p id="marks"></p>
+
+  <script>
+    const roll = prompt("Enter your Roll Number:");
+    fetch(`http://localhost:5000/student/${roll}`)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("marks").textContent = `Marks: ${data.marks ?? "Not assigned yet"}`;
+      })
+      .catch(() => alert("Failed to load marks."));
+  </script>
+</body>
+</html>

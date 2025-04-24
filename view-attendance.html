@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>View Attendance</title>
+</head>
+<body>
+  <h2>📅 Your Attendance</h2>
+  <p id="attendance"></p>
+
+  <script>
+    const roll = prompt("Enter your Roll Number:");
+    fetch(`http://localhost:5000/student/${roll}`)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("attendance").textContent = `Attendance: ${data.attendance}%`;
+      })
+      .catch(() => alert("Failed to load attendance."));
+  </script>
+</body>
+</html>

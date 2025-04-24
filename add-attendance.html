@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mark Attendance</title>
+</head>
+<body>
+  <h2>Mark Attendance</h2>
+  <form id="attendanceForm">
+    <input type="text" id="rollNumber" placeholder="Student Roll Number" required />
+    <select id="status" required>
+      <option value="">Select Status</option>
+      <option value="Present">Present</option>
+      <option value="Absent">Absent</option>
+    </select>
+    <button type="submit">Submit Attendance</button>
+  </form>
+
+  <script>
+    document.getElementById("attendanceForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const rollNumber = document.getElementById("rollNumber").value;
+      const status = document.getElementById("status").value;
+
+      try {
+        const res = await fetch("http://localhost:5000/attendance", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ rollNumber, status }),
+        });
+
+        const data = await res.json();
+        alert(data.message);
+      } catch (err) {
+        alert("Error submitting attendance");
+      }
+    });
+  </script>
+</body>
+</html>

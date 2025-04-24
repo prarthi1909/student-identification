@@ -1,9 +1,13 @@
 document.getElementById("role").addEventListener("change", function () {
     const courseField = document.getElementById("course");
+    const rollNumberField = document.getElementById("rollNumber");
+
     if (this.value === "student") {
         courseField.style.display = "block";
+        rollNumberField.style.display = "block";
     } else {
         courseField.style.display = "none";
+        rollNumberField.style.display = "none";
     }
 });
 
@@ -16,6 +20,7 @@ document.getElementById("signupForm").addEventListener("submit", async function 
     const password = document.getElementById("password").value.trim();
     const role = document.getElementById("role").value;
     const course = document.getElementById("course").value;
+    const rollNumber = document.getElementById("rollNumber").value.trim();
 
     // Validation: Required fields
     if (!name || !email || !password || !role) {
@@ -23,10 +28,16 @@ document.getElementById("signupForm").addEventListener("submit", async function 
         return;
     }
 
-    // If role is student, course must be selected
-    if (role === "student" && !course) {
-        alert("⚠️ Please select a course for student role.");
-        return;
+    // If student, course and roll number must be present
+    if (role === "student") {
+        if (!course) {
+            alert("⚠️ Please select a course for student role.");
+            return;
+        }
+        if (!rollNumber) {
+            alert("⚠️ Please enter Roll Number for student.");
+            return;
+        }
     }
 
     // Email format validation
@@ -56,7 +67,8 @@ document.getElementById("signupForm").addEventListener("submit", async function 
                 email,
                 password,
                 role,
-                course: role === "student" ? course : null
+                course: role === "student" ? course : null,
+                rollNumber: role === "student" ? rollNumber : null
             })
         });
 
