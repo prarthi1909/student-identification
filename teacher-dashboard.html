@@ -11,12 +11,39 @@
     h1 {
       color: #2c3e50;
     }
+    h2 {
+      margin-top: 40px;
+      color: #34495e;
+    }
+    form {
+      margin-top: 15px;
+    }
+    input, button {
+      display: block;
+      margin: 10px 0;
+      padding: 8px;
+      font-size: 16px;
+      width: 300px;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    #marks-message, #attendance-message {
+      margin-top: 10px;
+      font-weight: bold;
+    }
     ul {
       list-style: none;
       padding: 0;
     }
     li {
-      margin: 10px 0;
+      margin-bottom: 10px;
     }
     a {
       text-decoration: none;
@@ -34,12 +61,81 @@
 
   <ul>
     <li><a href="view-students.html">📄 View Student List</a></li>
-    <li><a href="add-marks.html">📝 Add Marks</a></li>
-    <li><a href="add-attendance.html">✅ Mark Attendance</a></li>
   </ul>
 
-  <script src="js/teacher-dashboard.js"></script>
+  <!-- Add Marks Section -->
+  <h2>📝 Add Marks</h2>
+  <form id="add-marks-form">
+    <input type="text" name="rollNumber" placeholder="Student Roll Number" required />
+    <input type="text" name="subject" placeholder="Subject Name" required />
+    <input type="text" name="exam" placeholder="Exam Type (e.g. Midterm, Final)" required />
+    <input type="number" name="score" placeholder="Marks" required />
+    <button type="submit">Submit Marks</button>
+  </form>
+  <div id="marks-message"></div>
 
+  <!-- Add Attendance Section -->
+  <h2>✅ Mark Attendance</h2>
+  <form id="add-attendance-form">
+    <input type="text" name="rollNumber" placeholder="Student Roll Number" required />
+    <input type="number" name="attendance" placeholder="Attendance %" required />
+    <button type="submit">Submit Attendance</button>
+  </form>
+  <div id="attendance-message"></div>
+
+  <script>
+    // Add Marks Submission
+    document.getElementById("add-marks-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const form = e.target;
+
+      const data = {
+        rollNumber: form.rollNumber.value,
+        subject: form.subject.value,
+        exam: form.exam.value,
+        score: parseInt(form.score.value)
+      };
+
+      fetch("/marks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("marks-message").innerText = data.message;
+        form.reset();
+      })
+      .catch(() => {
+        document.getElementById("marks-message").innerText = "Error submitting marks.";
+      });
+    });
+
+    // Attendance Submission
+    document.getElementById("add-attendance-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const form = e.target;
+
+      const data = {
+        rollNumber: form.rollNumber.value,
+        attendance: parseInt(form.attendance.value)
+      };
+
+      fetch("/attendance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("attendance-message").innerText = data.message;
+        form.reset();
+      })
+      .catch(() => {
+        document.getElementById("attendance-message").innerText = "Error submitting attendance.";
+      });
+    });
+  </script>
 
 </body>
 </html>

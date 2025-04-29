@@ -49,6 +49,12 @@ async function insertDefaultCourses() {
 }
 
 // ✅ User Schema with Role & Course
+const markSchema = new mongoose.Schema({
+  subject: { type: String, required: true },
+  exam:    { type: String, required: true },
+  score:   { type: Number, required: true }
+});
+
 const UserSchema = new mongoose.Schema({
   name:       { type: String, required: true, trim: true },
   email:      { type: String, required: true, unique: true, lowercase: true, trim: true },
@@ -56,7 +62,7 @@ const UserSchema = new mongoose.Schema({
   role:       { type: String, required: true },
   course:     { type: String },
   rollNumber: { type: String, required: true, unique: true },
-  marks:      { type: Number, default: null },
+  marks:      [markSchema],
   attendance: { type: Number, default: 0 }
 });
 const User = mongoose.model("User", UserSchema);
@@ -131,7 +137,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// 🔹 GET /students - fetch students (updated to include email)
+// 🔹 GET /students
 app.get("/students", async (req, res) => {
   try {
     const students = await User.find({ role: "student" }).select("name email rollNumber course marks attendance");
@@ -142,23 +148,29 @@ app.get("/students", async (req, res) => {
   }
 });
 
-// 🔹 POST /marks - Add or update marks by roll number
+// 🔹 POST /marks - Add or update a subject mark
 app.post("/marks", async (req, res) => {
-  const { rollNumber, marks } = req.body;
+  const { rollNumber, subject, exam, score } = req.body;
+
   try {
     const student = await User.findOne({ rollNumber, role: "student" });
     if (!student) return res.status(404).json({ message: "Student not found" });
 
-    student.marks = marks;
-    await student.save();
+    const existingMark = student.marks.find(m => m.subject === subject && m.exam === exam);
+    if (existingMark) {
+      existingMark.score = score; // update existing
+    } else {
+      student.marks.push({ subject, exam, score }); // add new
+    }
 
-    res.status(200).json({ message: "Marks updated successfully" });
+    await student.save();
+    res.status(200).json({ message: "Marks saved successfully" });
   } catch (err) {
     res.status(500).json({ message: "Failed to update marks" });
   }
 });
 
-// 🔹 POST /attendance - Add or update attendance by roll number
+// 🔹 POST /attendance
 app.post("/attendance", async (req, res) => {
   const { rollNumber, attendance } = req.body;
   try {
@@ -174,7 +186,7 @@ app.post("/attendance", async (req, res) => {
   }
 });
 
-// 🔹 GET /student/:rollNumber - Get student by roll number
+// 🔹 GET /student/:rollNumber
 app.get("/student/:rollNumber", async (req, res) => {
   const rollNumber = req.params.rollNumber;
   try {
@@ -186,7 +198,7 @@ app.get("/student/:rollNumber", async (req, res) => {
   }
 });
 
-// 🔹 GET /courses - List all courses
+// 🔹 GET /courses
 app.get("/courses", async (req, res) => {
   const courses = await Course.find();
   res.json(courses);

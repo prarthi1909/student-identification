@@ -3,19 +3,61 @@
 <head>
   <meta charset="UTF-8" />
   <title>View Marks</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f0f0f0;
+    }
+    h2 {
+      color: #333;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      background: #fff;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
 <body>
   <h2>📊 Your Marks</h2>
-  <p id="marks"></p>
+  <div id="marks">Loading...</div>
 
   <script>
     const roll = prompt("Enter your Roll Number:");
+
     fetch(`http://localhost:5000/student/${roll}`)
       .then(res => res.json())
       .then(data => {
-        document.getElementById("marks").textContent = `Marks: ${data.marks ?? "Not assigned yet"}`;
+        const marksDiv = document.getElementById("marks");
+
+        if (!data.marks || data.marks.length === 0) {
+          marksDiv.textContent = "Marks not assigned yet.";
+          return;
+        }
+
+        let html = "<ul>";
+        data.marks.forEach(mark => {
+          html += `<li>
+            <strong>Subject:</strong> ${mark.subject} <br>
+            <strong>Exam:</strong> ${mark.exam} <br>
+            <strong>Score:</strong> ${mark.score}
+          </li>`;
+        });
+        html += "</ul>";
+
+        marksDiv.innerHTML = html;
       })
-      .catch(() => alert("Failed to load marks."));
+      .catch(err => {
+        console.error("Error fetching marks:", err);
+        document.getElementById("marks").textContent = "Failed to load marks.";
+      });
   </script>
 </body>
 </html>
